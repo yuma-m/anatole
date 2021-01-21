@@ -1,15 +1,22 @@
 @mixin content_dark {
+    .content {
+        background-color: $bg-color-dark;
+    }
     .page-top {
         background-color: $bg-color-dark;
         border-bottom: 1px solid $border-color-dark;
     }
 
     .page-top .nav a {
-        color: $nav-text-dark;
+        color: $nav-text-color-dark;
     }
 
     .page-top .nav a.current {
-        color: $nav-text-dark;
-        border-bottom: 1px solid $nav-text-dark;
+        color: $nav-text-color-dark;
+        border-bottom: 1px solid $nav-text-color-dark;
     }
+}
+
+html[data-theme='dark']  {
+    @include content_dark()
 }

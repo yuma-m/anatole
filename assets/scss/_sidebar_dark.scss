@@ -11,3 +11,7 @@
     }
 
 }
+
+html[data-theme='dark']  {
+    @include sidebar_dark()
+}

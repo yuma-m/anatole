@@ -10,13 +10,27 @@
     <meta name="google-site-verification" content="{{ .Site.Params.googleSiteVerify }}">
     {{- end -}}
 
-    <!-- CSS -->
-    {{ $style := resources.Get "scss/anatole.scss" | resources.ExecuteAsTemplate "main.css" . | resources.ToCSS | resources.Minify | resources.Fingerprint }}
-    <link rel="stylesheet"
-          href="{{ $style.Permalink }}"
-          integrity="{{ $style.Data.Integrity }}"
-          crossorigin="anonymous"
-          type="text/css">
+    {{ if .Site.IsServer }}
+    {{ $cssOpts := (dict "targetPath" "css/anatole.css" "enableSourceMap" true ) }}
+    {{ $styles := resources.Get "scss/anatole.scss" | resources.ExecuteAsTemplate "style.anatole.css" . | toCSS $cssOpts }}
+    <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
+    {{ else }}
+    {{ $cssOpts := (dict "targetPath" "css/anatole.css" ) }}
+    {{ $styles := resources.Get "scss/anatole.scss" | resources.ExecuteAsTemplate "style.anatole.css" . | toCSS $cssOpts | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
+    {{ end }}
+
+    <!-- TODO Load only if really required -->
+    {{ if .Site.IsServer }}
+    {{ $cssOpts := (dict "targetPath" "css/anatole_dark.css" "enableSourceMap" true ) }}
+    {{ $styles := resources.Get "scss/anatole_dark.scss" | resources.ExecuteAsTemplate "style.anatole-dark.css" . | toCSS $cssOpts }}
+    <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
+    {{ else }}
+    {{ $cssOpts := (dict "targetPath" "css/anatole_dark.css" ) }}
+    {{ $styles := resources.Get "scss/anatole_dark.scss" | resources.ExecuteAsTemplate "style.anatole-dark.css" . | toCSS $cssOpts | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
+    {{ end }}
+ 
 
     {{ range .Site.Params.customCss }}
         {{ $minstyles := resources.Get . }}

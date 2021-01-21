@@ -5,3 +5,7 @@
     }
     
 }
+
+html[data-theme='dark']  {
+    @include pagination_dark();
+}

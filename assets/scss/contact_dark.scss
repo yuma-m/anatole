@@ -20,3 +20,7 @@
         border: 1px solid $form-button-hover-border-color-dark;
     }
 }
+
+html[data-theme='dark']  {
+    @include contact_dark()
+}

@@ -3,3 +3,7 @@
         border: 1px solid $border-color-dark;
     }
 }
+
+html[data-theme='dark']  {
+    @include buttons_dark()
+}

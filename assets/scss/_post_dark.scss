@@ -15,8 +15,13 @@
         color: $heading-color-dark;
     }
     
+    
     .post .post-footer {
         border-bottom: 1px solid $border-color-dark;
+    }
+    
+    .post .post-footer .meta .info {
+        color: $body-color-dark;
     }
     
     .post .post-footer .meta a {
@@ -29,5 +34,9 @@
     
     .post .post-thumbnail img {
         border: 1px solid $border-color-dark;
-    } 
+    }
+}
+
+html[data-theme='dark']  {
+    @include post_dark()
 }

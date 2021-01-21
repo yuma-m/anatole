@@ -5,3 +5,7 @@
     }
     
 }
+
+html[data-theme='dark']  {
+    @include menu_dark()
+}
