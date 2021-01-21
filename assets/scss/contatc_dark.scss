@@ -1,0 +1,22 @@
+@mixin contact_dark {
+    .form-style ul li .field-style {
+        background-color: $bg-color-dark;
+        border: 1px solid $form-border-color-dark;
+        color: $body-color-dark;
+    }
+    .form-style ul li textarea {
+        background-color: $bg-color-dark;
+        border: 1px solid $form-border-color-dark;
+        color: $body-color-dark;
+    }
+    .form-style ul li input[type="button"], 
+    .form-style ul li input[type="submit"] {
+        background-color: $bg-color-dark;
+        border: 1px solid $form-border-color-dark;
+    }
+    .form-style ul li input[type="button"]:hover, 
+    .form-style ul li input[type="submit"]:hover {
+        background-color: $bg-color-dark;
+        border: 1px solid $form-button-hover-border-color-dark;
+    }
+}

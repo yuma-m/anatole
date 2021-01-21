@@ -1,0 +1,31 @@
+.pagination {
+    margin: 30px;
+    padding: 0px 0 56px 0;
+    text-align: center;
+}
+
+.pagination ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 13px;
+}
+
+.pagination ul li {
+    margin: 0 2px 0 2px;
+    display: inline;
+    line-height: 1;
+}
+
+.pagination ul li a {
+    text-decoration: none;
+    color: $body-color;
+}
+
+.pagination .pre {
+    float: left;
+}
+
+.pagination .next {
+    float: right;
+}

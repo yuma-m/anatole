@@ -1,0 +1,40 @@
+@mixin base_dark {
+ 
+    html {
+        background-color: $bg-color-dark;
+    }
+
+    body {
+        color: $body-color-dark;
+        background-color: $bg-color-dark;
+    }
+
+    blockquote {
+        border-left: .25em solid $blockquote-border-color-dark;
+        color: $blockquote-text-color-dark;
+    }
+
+    .category {
+        color: $tag-color-dark !important;
+        background-color: $secondary-bg-color-dark;
+        border: 1px solid $border-color-dark;
+    }
+
+    pre {
+        background-color: $pre-bg-color-dark;
+    }
+
+    a:link,
+    a:visited {
+        color: $tag-color-dark;
+    }
+
+    .page-top .nav {
+        background-color: $secondary-bg-color;
+    }
+
+    .navbar-burger span {
+        background-color: $heading-color;
+    }
+
+}

@@ -1,0 +1,13 @@
+@mixin  sidebar_dark {
+    
+    .sidebar {
+        background-color:$bg-color-dark;
+        border-right: 1px solid$border-color-dark;
+
+    }
+
+    .sidebar .logo-title .title a {
+        color:$heading-color-dark;
+    }
+
+}

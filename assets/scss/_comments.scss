@@ -1,0 +1,22 @@
+#install-btn {
+    position: fixed;
+    bottom: 0px;
+    right: 6px;
+}
+
+#disqus_thread {
+    margin: 30px;
+    border-bottom: 1px solid $border-color;
+}
+
+#fb_comments_container {
+    margin: 30px;
+}
+
+.utterances {
+    max-width: unset;
+}
+
+.comment-count {
+    color: #666;
+}

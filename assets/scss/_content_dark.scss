@@ -1,0 +1,15 @@
+@mixin content_dark {
+    .page-top {
+        background-color: $bg-color-dark;
+        border-bottom: 1px solid $border-color-dark;
+    }
+
+    .page-top .nav a {
+        color: $nav-text-dark;
+    }
+
+    .page-top .nav a.current {
+        color: $nav-text-dark;
+        border-bottom: 1px solid $nav-text-dark;
+    }
+}

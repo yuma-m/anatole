@@ -1,0 +1,76 @@
+.sidebar {
+    width: $sidebar-width;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-color:$bg-color;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 4;
+    border-right: 1px solid$border-color;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.sidebar .logo-title {
+    text-align: center;
+    padding-top: 240px;
+    flex: 1;
+}
+
+.sidebar .logo-title .description {
+    font-size: 14px;
+}
+
+.sidebar .logo-title .logo {
+    margin: 0 auto;
+}
+
+.sidebar .logo-title .title img {
+    width: 127px;
+    border-radius: 50%;
+}
+
+.sidebar .logo-title .title h3 {
+    text-transform: uppercase;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin: 1em;
+}
+
+.sidebar .logo-title .title a {
+    text-decoration: none;
+    color:$heading-color;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.sidebar .social-links {
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
+    text-align: center;
+    flex: 7;
+}
+
+.sidebar .social-links i {
+    margin-right: 3px;
+}
+
+.sidebar .social-links li {
+    display: inline;
+    padding: 0 4px;
+    line-height: 0;
+}
+
+.sidebar .social-links a {
+    color:$heading-color;
+}
+
+.sidebar .social-links a:hover {
+    color: #2660ab;
+}

@@ -1,0 +1,7 @@
+@mixin menu_dark {
+    
+    .menu .btn-down li a {
+        border: 1px solid $border-color-dark;
+    }
+    
+}

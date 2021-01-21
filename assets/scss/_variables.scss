@@ -1,7 +1,45 @@
 // Font Variables
-
+$text-font-family: Verdana, sans-serif;
 // Color Variables
+// Light version
+$bg-color: #fff;
+$secondary-bg-color: #eeeeee;
+$heading-color: #5f5f5f;
+$body-color: rgba(0, 0, 0, 0.7);
+$post-color: rgba(0, 0, 0, 0.44);
+$border-color: rgba(0, 0, 0, 0.15);
+$form-border-color: #9f9f9f;
+$form-button-hover-border-color: #000;
+$pre-bg-color: #f9f9fd;
+$nav-text-color: #5a5a5a;
+$tag-color: #424242;
+$blockquote-text-color: #858585;
+$blockquote-border-color: #dfe2e5;
+
+// Dark version
+$bg-color-dark: #292a2d;
+$secondary-bg-color-dark: #2c2d32;
+$heading-color-dark: rgb(169, 169, 179);
+$body-color-dark: rgb(169, 169, 179);
+$post-color-dark: rgba(0, 0, 0, 0.44);
+$border-colo-darkr: rgb(38, 38, 38);
+$form-border-color-dark: rgb(169, 169, 179);
+$form-button-hover-border-color-dark: #fff;
+$pre-bg-color-dark: rgb(33, 33, 45);
+$nav-text-color-dark: rgb(191, 191, 191);
+$tag-color-dark: rgb(191, 191, 191);
+$blockquote-text-color-dark: #808080;
+$blockquote-border-color-dark: #424242;
 
 // Design Ratios
 $body_max_width: 1920px;
 $content_ratio: 0.7;
+$thumbnail-height: 15em;
+
+
+/* automated values */
+$sidebar-ratio: 1 - $content-ratio;
+$content-max-width: $body_max_width * $content_ratio;
+$sidebar-max-width: $body_max_width - $content-max-width;
+$content-width: $content_ratio * 100%;
+$sidebar-width: $sidebar-ratio * 100%;

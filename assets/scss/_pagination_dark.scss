@@ -1,0 +1,7 @@
+@mixin pagination_dark {
+    
+    .pagination ul li a {
+        color: $body-color-dark;
+    }
+    
+}
