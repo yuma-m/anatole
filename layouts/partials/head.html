@@ -11,18 +11,13 @@
     {{- end -}}
 
     <!-- CSS -->
-    {{ $style := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint }}
+    {{ $style := resources.Get "scss/anatole.scss" | resources.ExecuteAsTemplate "main.css" . | resources.ToCSS | resources.Minify | resources.Fingerprint }}
     <link rel="stylesheet"
           href="{{ $style.Permalink }}"
           integrity="{{ $style.Data.Integrity }}"
           crossorigin="anonymous"
           type="text/css">
-    {{ $markupHighlightStyle := resources.Get "css/markupHighlight.css" | resources.Minify | resources.Fingerprint }}
-    <link rel="stylesheet"
-        href="{{ $markupHighlightStyle.Permalink }}"
-        integrity="{{ $markupHighlightStyle.Data.Integrity }}"
-        crossorigin="anonymous"
-        type="text/css">
+
     {{ range .Site.Params.customCss }}
         {{ $minstyles := resources.Get . }}
         {{ $styles := $minstyles | resources.Minify | resources.Fingerprint }}
