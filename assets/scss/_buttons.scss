@@ -7,7 +7,7 @@ a.btn {
     display: inline-block;
     position: relative;
     outline: 0;
-    color: var(--post-color);
+    color: --post-color;
     background: transparent;
     font-size: 14px;
     text-align: center;
