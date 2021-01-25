@@ -1,13 +1,5 @@
 <head>
-  <title>
-    {{ .Site.Params.author }}{{ with .Title }}
-      |
-      {{ . }}
-
-
-    {{ end }}
-
-  </title>
+  <title> {{ .Title }}{{ if .Title }} | {{ end }}{{ .Site.Params.author }} </title>
 
   <!-- Meta -->
   <meta charset="utf-8" />
