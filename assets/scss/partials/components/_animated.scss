@@ -1,3 +1,5 @@
+@use '../../modules' as *;
+
 .animated {
   transition: top 0.8s linear;
   animation-duration: 1s;

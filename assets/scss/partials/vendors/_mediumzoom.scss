@@ -1,3 +1,5 @@
+@use '../../modules' as *;
+
 .medium-zoom-overlay {
   @include themed() {
     background: t('accent');

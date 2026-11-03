@@ -1,121 +1,68 @@
-{{ if .IsHome -}}
-  <script type="application/ld+json">
-    {
-      "@context": "http://schema.org",
-      "@type": "WebSite",
-      "name": "{{ .Site.Title }}",
-      "url": "{{ .Site.BaseURL }}",
-      "description": "{{ .Site.Params.description }}",
-      "thumbnailUrl": "{{ .Site.Params.Logo | absURL }}",
-      "license": "{{ .Site.Params.Copyright }}"
-    }
-  </script>
-
-{{ else if .IsPage }}
-  {{ $author :=  or (.Params.author) (.Site.Params.author) }}
-  {{ $favicon := .Site.Params.favicon | absURL }}
-  <script type="application/ld+json">
-    {
-        "@context": "http://schema.org",
-        "@type": "BlogPosting",
-        "articleSection": "{{ .Section }}",
-        "name": "{{ .Title | safeJS }}",
-        "headline": "{{ .Title | safeJS }}",
-        "alternativeHeadline": "{{ .Params.lead }}",
-        "description": "{{ if .Description }}
-      {{ .Description | safeJS }}
-
-
-    {{ else }}
-      {{ if .IsPage }}
-        {{ .Summary }}
-
-
-      {{ end }}
-
-
-    {{ end }}",
-        "inLanguage": {{ .Site.LanguageCode | default "en-us" }},
-        "isFamilyFriendly": "true",
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "{{ .Permalink }}"
-        },
-        "author" : {
-            "@type": "Person",
-            "name": "{{ $author }}"
-        },
-        "creator" : {
-            "@type": "Person",
-            "name": "{{ $author }}"
-        },
-        "accountablePerson" : {
-            "@type": "Person",
-            "name": "{{ $author }}"
-        },
-        "copyrightHolder" : {
-            "@type": "Person",
-            "name": "{{ $author }}"
-        },
-        "copyrightYear" : "{{ .Date.Format "2006" }}",
-        "dateCreated": "{{ .Date.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
-        "datePublished": "{{ .PublishDate.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
-        "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
-        "publisher":{
-            "@type":"Organization",
-            "name": {{ $author }},
-            "url": {{ .Site.BaseURL }},
-            "logo": {
-                "@type": "ImageObject",
-                "url": "{{ (printf "%s%s" $favicon "favicon-32x32.png") }}",
-                "width":"32",
-                "height":"32"
-            }
-        },
-        "image": {{ if .Params.images }}
-      [{{ range $i, $e := .Params.images }}
-        {{ if $i }}
-          ,
-
-        {{ end }}
-        {{ $e | absURL }}
-
-
-      {{ end }}
-      ]
-
-    {{ else }}
-      [{{ range $i, $e := .Site.Params.images }}
-        {{ if $i }}
-          ,
-
-        {{ end }}
-        {{ $e | absURL }}
-
-
-      {{ end }}
-      ]
-
-    {{ end }},
-        "url" : "{{ .Permalink }}",
-        "wordCount" : "{{ .WordCount }}",
-        "genre" : [ {{ range $index, $tag := .Params.categories }}
-      {{ if $index }}
-        ,
-
-      {{ end }}
-      "{{ $tag }}"
-
-    {{ end }}],
-        "keywords" : [ {{ range $index, $keyword := .Params.tags }}
-      {{ if $index }}
-        ,
-
-      {{ end }}
-      "{{ $keyword }}"
-
-    {{ end }}]
-    }
-  </script>
-
-{{ end }}
+{{- $schema := dict -}}
+{{- $images := .Params.images | default .Site.Params.images -}}
+{{- if .IsHome -}}
+  {{- $schema = dict
+    "@context" "https://schema.org"
+    "@type" "WebSite"
+    "name" .Site.Title
+    "url" .Site.BaseURL
+    "description" .Site.Params.description
+  -}}
+  {{- with $images -}}
+    {{- $schema = merge $schema (dict "thumbnailUrl" (index . 0 | absURL)) -}}
+  {{- end -}}
+  {{- with .Site.Params.copyright -}}
+    {{- $schema = merge $schema (dict "license" .) -}}
+  {{- end -}}
+{{- else if .IsPage -}}
+  {{- $author := dict "@type" "Person" "name" (.Params.author | default .Site.Params.author) -}}
+  {{- $lang := .Site.Language.Locale | default "en-us" -}}
+  {{- if findRE `[\p{Hiragana}\p{Katakana}]` .Plain 1 -}}
+    {{- $lang = "ja" -}}
+  {{- end -}}
+  {{- $imageURLs := slice -}}
+  {{- range $images -}}
+    {{- $imageURLs = $imageURLs | append (. | absURL) -}}
+  {{- end -}}
+  {{- $schema = dict
+    "@context" "https://schema.org"
+    "@type" "BlogPosting"
+    "articleSection" .Section
+    "name" .Title
+    "headline" .Title
+    "description" (.Description | default (.Summary | plainify | strings.TrimSpace))
+    "inLanguage" $lang
+    "isFamilyFriendly" "true"
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+    "author" $author
+    "creator" $author
+    "accountablePerson" $author
+    "copyrightHolder" $author
+    "copyrightYear" (.Date.Format "2006")
+    "dateCreated" (.Date.Format "2006-01-02T15:04:05Z07:00")
+    "datePublished" (.PublishDate.Format "2006-01-02T15:04:05Z07:00")
+    "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+    "publisher" (dict
+      "@type" "Organization"
+      "name" $author.name
+      "url" .Site.BaseURL
+      "logo" (dict
+        "@type" "ImageObject"
+        "url" (printf "%sfavicon-32x32.png" .Site.Params.favicon | absURL)
+        "width" "32"
+        "height" "32"
+      )
+    )
+    "image" $imageURLs
+    "url" .Permalink
+    "wordCount" (string .WordCount)
+    "genre" (.Params.categories | default slice)
+    "keywords" (.Params.tags | default slice)
+  -}}
+  {{- with .Params.lead -}}
+    {{- $schema = merge $schema (dict "alternativeHeadline" .) -}}
+  {{- end -}}
+{{- end -}}
+{{- with $schema }}
+  <script type="application/ld+json">{{ . | jsonify | safeJS }}</script>
+{{- end }}

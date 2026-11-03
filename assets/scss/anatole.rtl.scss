@@ -1,4 +1,5 @@
-$content-ratio: {{ .Site.Params.contentratio | default 0.6 }};
-$text-direction: "rtl";
-
-@import 'main.scss';
+@use 'modules' with (
+  $content-ratio: {{ .Site.Params.contentratio | default 0.6 }},
+  $text-direction: "rtl"
+);
+@use 'main';
