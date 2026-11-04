@@ -1,4 +1,4 @@
-@use '../../modules' as *;
+@use 'modules/config' as conf;
 
 .footer {
   $font-size-footer: 1.4rem;
@@ -34,13 +34,13 @@
   &__sidebar {
     display: none;
 
-    @include desktop_and_print {
+    @include conf.desktop {
       display: inline-block;
     }
   }
 
   &__base {
-    @include desktop_and_print {
+    @include conf.desktop {
       display: none;
     }
   }

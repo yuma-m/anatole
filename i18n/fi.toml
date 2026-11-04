@@ -43,3 +43,12 @@ other = "Tietoja"
 
 [update]
 other = "Päivitys"
+
+[series_posts]
+other = "Viestit tässä sarjassa"
+
+[related_posts]
+other = "Vastaavia viestejä"
+
+[toc]
+other = "Sisällysluettelo"

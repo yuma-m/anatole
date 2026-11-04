@@ -47,3 +47,15 @@ other = "Info"
 
 [update]
 other = "Aktualisierung"
+
+[series_posts]
+other = "Beiträge in dieser Serie"
+
+[related_posts]
+other = "Ähnliche Beiträge"
+
+[toc]
+other = "Inhaltsverzeichnis"
+
+[ariaLanguage]
+other = "Sprache: "

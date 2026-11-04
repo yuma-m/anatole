@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@use 'hugo:vars' as hugo;
 
 @mixin desktop {
   @media screen and (min-width: 961px) {
@@ -18,24 +18,14 @@
   }
 }
 
-@mixin desktop_and_print {
-  @include desktop {
-    @content;
-  }
-
-  @include print {
-    @content;
-  }
-}
-
 @mixin ltr {
-  @if $text-direction == ltr {
+  @if hugo.$text-direction == ltr {
     @content;
   }
 }
 
 @mixin rtl {
-  @if $text-direction == rtl {
+  @if hugo.$text-direction == rtl {
     @content;
   }
 }

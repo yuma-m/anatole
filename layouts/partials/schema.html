@@ -10,24 +10,27 @@
   -}}
   {{- with $images -}}
     {{- $schema = merge $schema (dict "thumbnailUrl" (index . 0 | absURL)) -}}
-
   {{- end -}}
   {{- with .Site.Params.copyright -}}
     {{- $schema = merge $schema (dict "license" .) -}}
-
   {{- end -}}
-
 {{- else if .IsPage -}}
-  {{- $author := dict "@type" "Person" "name" (.Params.author | default .Site.Params.author) -}}
+  {{- $authorName := "" -}}
+  {{- with or .Params.author .Site.Params.author -}}
+    {{- if reflect.IsMap . -}}
+      {{- with .name }}{{ $authorName = . }}{{ end -}}
+    {{- else -}}
+      {{- $authorName = . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $author := dict "@type" "Person" "name" $authorName -}}
   {{- $lang := .Site.Language.Locale | default "en-us" -}}
   {{- if findRE `[\p{Hiragana}\p{Katakana}]` .Plain 1 -}}
     {{- $lang = "ja" -}}
-
   {{- end -}}
   {{- $imageURLs := slice -}}
   {{- range $images -}}
     {{- $imageURLs = $imageURLs | append (. | absURL) -}}
-
   {{- end -}}
   {{- $schema = dict
     "@context" "https://schema.org"
@@ -48,15 +51,15 @@
     "datePublished" (.PublishDate.Format "2006-01-02T15:04:05Z07:00")
     "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
     "publisher" (dict
-    "@type" "Organization"
-    "name" $author.name
-    "url" .Site.BaseURL
-    "logo" (dict
-    "@type" "ImageObject"
-    "url" (printf "%sfavicon-32x32.png" .Site.Params.favicon | absURL)
-    "width" "32"
-    "height" "32"
-    )
+      "@type" "Organization"
+      "name" $author.name
+      "url" .Site.BaseURL
+      "logo" (dict
+        "@type" "ImageObject"
+        "url" (printf "%sfavicon-32x32.png" .Site.Params.favicon | absURL)
+        "width" "32"
+        "height" "32"
+      )
     )
     "image" $imageURLs
     "url" .Permalink
@@ -66,13 +69,8 @@
   -}}
   {{- with .Params.lead -}}
     {{- $schema = merge $schema (dict "alternativeHeadline" .) -}}
-
   {{- end -}}
-
 {{- end -}}
 {{- with $schema }}
-  <script type="application/ld+json">
-    {{ . | jsonify | safeJS }}
-  </script>
-
+  <script type="application/ld+json">{{ . | jsonify | safeJS }}</script>
 {{- end }}

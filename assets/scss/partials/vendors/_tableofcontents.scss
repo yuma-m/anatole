@@ -1,4 +1,4 @@
-@use '../../modules' as *;
+@use 'modules/variables' as var;
 
 #TableOfContents {
   display: block;
@@ -17,7 +17,7 @@
 
 #TableOfContents li a {
   display: inherit;
-  color: $info;
+  color: var.$info;
 }
 
 #TableOfContents li a:hover {

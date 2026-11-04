@@ -1,5 +1,5 @@
 baseURL = "https://example.com"
-languageCode = "en"
+locale = "en"
 DefaultContentLanguage = "en"
 title = "Website of Jane Doe"
 
@@ -12,21 +12,30 @@ summarylength = 10
 enableEmoji = true
 enableRobotsTXT = true
 
-# Enable Disqus
-#disqusShortname = ""
 
-# Google Analytics
-#googleAnalytics = "UA-123-45"
 
 # Syntax highlighting
 pygmentsUseClasses = true   
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 
+# Localized dates requires Hugo version 0.87.0
+localizedDates = false
+
+# Mermaid
+[params.mermaid]
+enable = true
+
 [markup]
     [markup.goldmark]
-        [markup.goldmark.renderer]
+      [markup.goldmark.renderer]
         unsafe=true
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\[', '\]'], ['$$', '$$']]
+          inline = [['\(', '\)']]
 
 [taxonomies]
     category = "categories"
@@ -43,3 +52,11 @@ pygmentsCodefencesGuessSyntax = true
 [[related.indices]]
   name = 'tags'
   weight = 80
+
+[services]
+# Enable Disqus.Disqus.Shortname
+  [services.disqus]
+    #shortname = 'your-disqus-shortname'
+# Google Analytics
+  [services.googleAnalytics]
+    #ID = 'G-MEASUREMENT_ID'

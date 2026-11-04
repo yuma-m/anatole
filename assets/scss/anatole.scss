@@ -1,5 +1,0 @@
-@use 'modules' with (
-  $content-ratio: {{ .Site.Params.contentratio | default 0.6 }},
-  $text-direction: "ltr"
-);
-@use 'main';

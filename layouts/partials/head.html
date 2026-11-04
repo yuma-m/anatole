@@ -1,60 +1,62 @@
 <head>
+  <meta charset="utf-8" />
+  {{- $authorName := "" -}}
+  {{- with .Site.Params.author -}}
+    {{- if reflect.IsMap . -}}
+      {{- with .name -}}
+        {{- $authorName = . -}}
+      {{- end -}}
+    {{- else -}}
+      {{- $authorName = . -}}
+    {{- end -}}
+  {{- end -}}
   <title>
     {{- if (eq .Site.Params.reversepagetitle true) -}}
-      {{- with .Title }}
-        {{ . }} |
-
-      {{ end }}{{ .Site.Params.author -}}
-
+      {{- with .Title }}{{ . }} | {{ end }}{{ $authorName -}}
     {{- else -}}
-      {{- .Site.Params.author }}{{ with .Title }}
-        | {{ . }}
-
-      {{ end -}}
-
+      {{- $authorName }}{{ with .Title }} | {{ . }}{{ end -}}
     {{- end -}}
   </title>
 
   <!-- Meta -->
-  <meta charset="utf-8" />
   {{- hugo.Generator -}}
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="author" content="{{ .Site.Params.author }}" />
+  <meta name="author" content="{{ $authorName }}" />
   <meta name="description" content="{{ .Params.description | default .Site.Params.description }}" />
   {{ if .Params.redirectUrl }}
     <meta http-equiv="refresh" content="1; url={{ .Params.redirectUrl }}" />
-
   {{ end }}
   {{- if .Site.Params.googleSiteVerify }}
     <meta name="google-site-verification" content="{{ .Site.Params.googleSiteVerify }}" />
-
   {{- end -}}
 
 
   <!-- CSS -->
-  {{ if eq .Site.Language.Direction "rtl" }}
-    {{ $sassTemplate := resources.Get "scss/anatole.rtl.scss" }}
-    {{ $style := $sassTemplate | resources.ExecuteAsTemplate "scss/anatole.rtl.scss" . | css.Sass (dict "transpiler" "dartsass") | resources.Minify | resources.Fingerprint }}
-    <link
-      rel="stylesheet"
-      href="{{ $style.RelPermalink }}"
-      integrity="{{ $style.Data.Integrity }}"
-      crossorigin="anonymous"
-      type="text/css"
-    />
-
-  {{ else }}
-    {{ $sassTemplate := resources.Get "scss/anatole.scss" }}
-    {{ $style := $sassTemplate | resources.ExecuteAsTemplate "scss/anatole.scss" . | css.Sass (dict "transpiler" "dartsass") | resources.Minify | resources.Fingerprint }}
-    <link
-      rel="stylesheet"
-      href="{{ $style.RelPermalink }}"
-      integrity="{{ $style.Data.Integrity }}"
-      crossorigin="anonymous"
-      type="text/css"
-    />
-
-  {{ end }}
+  {{ $contentRatio := or site.Params.contentratio 0.6 -}}
+  {{ $languageDirection := or site.Language.Direction "ltr" -}}
+  {{ $vars := dict
+    "text_direction" $languageDirection
+    "content_ratio" (printf "%f%%" (mul $contentRatio 100))
+    "sidebar_ratio" (printf "%f%%" (mul (sub 1.0 $contentRatio) 100))
+    "content_ratio_wide" (printf "%f%%" (mul 0.8 (mul $contentRatio 100)))
+    "sidebar_ratio_wide" (printf "%f%%" (mul 0.8 (mul (sub 1.0 $contentRatio) 100)))
+  -}}
+  {{ $options := dict
+    "transpiler" "dartsass"
+    "vars" $vars
+    "targetPath" (printf "css/anatole%s.css" (cond (eq site.Language.Direction "") "" (printf ".%s" site.Language.Direction)))
+  -}}
+  {{ with resources.Get "scss/main.scss" -}}
+    {{ if hugo.IsProduction -}}
+      {{ with . | toCSS $options | minify | fingerprint }}
+        <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" />
+      {{ end -}}
+    {{ else -}}
+      {{ with . | toCSS $options }}
+        <link rel="stylesheet" href="{{ .RelPermalink }}" />
+      {{ end -}}
+    {{ end -}}
+  {{ end -}}
 
   {{ $markupHighlightStyle := resources.Get "css/markupHighlight.css" | resources.Minify | resources.Fingerprint }}
   <link
@@ -74,7 +76,6 @@
       crossorigin="anonymous"
       media="screen"
     />
-
   {{ end }}
   {{ $style := resources.Get "fontawesome/css/fontawesome.min.css" | resources.Fingerprint }}
   <link
@@ -85,6 +86,14 @@
     type="text/css"
   />
   {{ $style := resources.Get "fontawesome/css/solid.min.css" | resources.Fingerprint }}
+  <link
+    rel="stylesheet"
+    href="{{ $style.RelPermalink }}"
+    integrity="{{ $style.Data.Integrity }}"
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  {{ $style := resources.Get "fontawesome/css/regular.min.css" | resources.Fingerprint }}
   <link
     rel="stylesheet"
     href="{{ $style.RelPermalink }}"
@@ -109,7 +118,6 @@
       crossorigin="anonymous"
       type="text/css"
     />
-
   {{- end -}}
   {{ if .Site.Params.googleFonts }}
     {{ $baseUrl := "https://fonts.googleapis.com/css2?family=" }}
@@ -118,7 +126,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="{{ $url }}" rel="stylesheet" />
-
   {{- end -}}
 
 
@@ -127,25 +134,20 @@
   {{- range slice (slice "apple-touch-icon" "180x180") (slice "favicon-32x32" "32x32") (slice "favicon-16x16" "16x16") }}
     {{- $file := printf "%s%s.png" $.Site.Params.favicon (index . 0) }}
     {{- if fileExists (path.Join "static" $file) }}
-      <link
-        rel="{{ cond (eq (index . 0) "apple-touch-icon") "apple-touch-icon" "icon" }}"
-        type="image/png"
-        sizes="{{ index . 1 }}"
-        href="{{ $file | relURL }}"
-      />
-
+      <link rel="{{ cond (eq (index . 0) "apple-touch-icon") "apple-touch-icon" "icon" }}" type="image/png" sizes="{{ index . 1 }}" href="{{ $file | relURL }}" />
     {{- end }}
-
   {{- end }}
 
-
   <link rel="canonical" href="{{ .Permalink }}" />
+  <!-- License -->
+  {{- with .Site.Params.license -}}
+    <link rel="license" href="{{ . }}" />
+  {{- end -}}
+
 
   <!-- RSS -->
   {{ with .OutputFormats.Get "rss" -}}
     {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
-
-
   {{ end -}}
 
 
@@ -168,33 +170,24 @@
       integrity="{{ $secureThemeSwitcherJS.Data.Integrity }}"
       crossorigin="anonymous"
     ></script>
-
   {{ end }}
 
   {{- $js := "" -}}
   {{- range .Site.Params.customJs -}}
     {{- if or (in . "http://") (in . "https://") -}}
       <script src="{{ . | relURL }}"></script>
-
     {{- else -}}
       {{- $customJS := resources.Get . -}}
       {{- if $customJS -}}
         {{- if eq $js "" -}}
           {{- $js = $customJS -}}
-
-
         {{- else -}}
           {{- $js = slice $js $customJS | resources.Concat "js/custom.js" -}}
-
-
         {{- end -}}
-
 
       {{- end -}}
 
-
     {{- end -}}
-
 
   {{- end -}}
 
@@ -206,19 +199,22 @@
       integrity="{{ $secureJS.Data.Integrity }}"
       crossorigin="anonymous"
     ></script>
-
   {{- end -}}
 
   {{ if and hugo.IsProduction .Site.Params.plausibleAnalytics .Site.Params.plausibleAnalytics.domain }}
     {{- partial "analytics/plausible" . -}}
-
-
   {{ end }}
 
   {{ if and hugo.IsProduction .Site.Params.umami.serverURL .Site.Params.umami.id }}
     {{- partial "analytics/umami" . -}}
+  {{ end }}
 
+  {{ if and hugo.IsProduction .Site.Params.Matomo.instance .Site.Params.Matomo.siteId }}
+    {{- partial "analytics/matomo" . -}}
+  {{ end }}
 
+  {{ if and hugo.IsProduction .Site.Params.meta.pixelId }}
+    {{- partial "analytics/meta.html" . -}}
   {{ end }}
 
 
@@ -232,4 +228,11 @@
 
   <!-- Schema.org-->
   {{ partial "schema.html" . }}
+
+
+  <!-- KaTeX-->
+  {{ $noop := .WordCount }}
+  {{ if .Page.Store.Get "hasMath" }}
+    {{ partial "katex.html" . }}
+  {{ end }}
 </head>

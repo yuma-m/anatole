@@ -1,6 +1,3 @@
-$content-ratio: 0.6 !default;
-$text-direction: 'ltr' !default;
-
 $accent--lightmode: #fff;
 $primary--lightmode: #464646;
 $primary-light--lightmode: #9f9f9f;
@@ -20,9 +17,3 @@ $danger: #ef5753;
 
 $thumbnail-height: 15em;
 $body-max-width: 1920px;
-
-$sidebar-ratio: calc(1 - #{$content-ratio});
-$content-max-width: calc(#{$body-max-width} * #{$content-ratio});
-$sidebar-max-width: calc(#{$body-max-width} - #{$content-max-width});
-$content-width: calc(#{$content-ratio} * 100%);
-$sidebar-width: calc(#{$sidebar-ratio} * 100%);

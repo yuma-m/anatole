@@ -1,6 +1,7 @@
-@use '../../modules' as *;
+@use 'modules/color_theme' as color;
+@use 'modules/config' as conf;
 
-.languageswitch {
+.optionswitch {
   position: relative;
 
   &__label {
@@ -14,14 +15,14 @@
     padding: 0;
     position: relative;
 
-    @include desktop {
+    @include conf.desktop {
       border-radius: 5px;
       position: absolute;
       top: 32px;
 
-      @include themed() {
-        background: t('primary-lighter');
-        box-shadow: t('shadow');
+      @include color.themed() {
+        background: color.t('primary-lighter');
+        box-shadow: color.t('shadow');
       }
     }
 
@@ -34,11 +35,11 @@
       white-space: nowrap;
       padding-top: 24px;
 
-      @include themed() {
-        color: t('primary');
+      @include color.themed() {
+        color: color.t('primary');
       }
 
-      @include desktop {
+      @include conf.desktop {
         padding: 12px;
       }
     }
@@ -57,23 +58,23 @@
       transform: rotate(45deg) translateY(0px) translatex(10px);
       width: 14px;
 
-      @include themed() {
-        background: t('primary-lighter');
-        box-shadow: t('shadow');
-        border-color: t('primary-lighter');
+      @include color.themed() {
+        background: color.t('primary-lighter');
+        box-shadow: color.t('shadow');
+        border-color: color.t('primary-lighter');
       }
     }
   }
 
   &__picker {
     &:checked {
-      ~ .languageswitch {
+      ~ .optionswitch {
         &__list {
           display: block;
         }
 
         &__triangle {
-          @include desktop {
+          @include conf.desktop {
             display: block;
           }
         }
