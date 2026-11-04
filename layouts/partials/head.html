@@ -12,9 +12,9 @@
   {{- end -}}
   <title>
     {{- if (eq .Site.Params.reversepagetitle true) -}}
-      {{- with .Title }}{{ . }} | {{ end }}{{ $authorName -}}
+      {{- with .Title }}{{ . }} |{{ end }}{{ $authorName -}}
     {{- else -}}
-      {{- $authorName }}{{ with .Title }} | {{ . }}{{ end -}}
+      {{- $authorName }}{{ with .Title }}| {{ . }}{{ end -}}
     {{- end -}}
   </title>
 
@@ -134,9 +134,15 @@
   {{- range slice (slice "apple-touch-icon" "180x180") (slice "favicon-32x32" "32x32") (slice "favicon-16x16" "16x16") }}
     {{- $file := printf "%s%s.png" $.Site.Params.favicon (index . 0) }}
     {{- if fileExists (path.Join "static" $file) }}
-      <link rel="{{ cond (eq (index . 0) "apple-touch-icon") "apple-touch-icon" "icon" }}" type="image/png" sizes="{{ index . 1 }}" href="{{ $file | relURL }}" />
+      <link
+        rel="{{ cond (eq (index . 0) "apple-touch-icon") "apple-touch-icon" "icon" }}"
+        type="image/png"
+        sizes="{{ index . 1 }}"
+        href="{{ $file | relURL }}"
+      />
     {{- end }}
   {{- end }}
+
 
   <link rel="canonical" href="{{ .Permalink }}" />
   <!-- License -->
